@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>G53 IFDM Bootcamp — Research Groups</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+
+:root{
+  --paper:#ECEEEA; --surface:#F6F7F4; --ink:#1C2B27; --inkSoft:#56615B;
+  --rule:#CCD3CD; --accent:#0F5C4E; --gold:#B4862B; --goldSoft:#EFE3C4;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:'Hanken Grotesk',system-ui,sans-serif;
+  padding:32px 18px 60px; min-height:100vh;
+}
+::selection{background:var(--accent); color:var(--paper);}
+.wrap{max-width:760px; margin:0 auto;}
+
+.eyebrow{font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--inkSoft);}
+
+h1{font-family:'Newsreader',Georgia,serif; font-weight:500;
+  font-size:clamp(34px,7vw,52px); line-height:1.04; letter-spacing:-0.01em; margin:10px 0 6px;}
+.lede{font-family:'Newsreader',Georgia,serif; font-style:italic;
+  font-size:clamp(17px,2.6vw,21px); color:var(--inkSoft); margin:0 0 26px; max-width:560px;}
+
+.bar{background:var(--surface); border:1px solid var(--rule); border-radius:12px;
+  padding:16px; margin-bottom:14px; display:flex; flex-wrap:wrap; gap:10px; align-items:center;}
+input[type=text]{flex:1 1 160px; min-width:140px; background:var(--paper);
+  border:1px solid var(--rule); border-radius:8px; padding:9px 12px; font-size:15px;
+  font-family:inherit; color:var(--ink);}
+input::placeholder{color:var(--inkSoft); opacity:.6;}
+input:focus-visible, button:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+
+button{font-family:inherit; cursor:pointer;}
+.btn{border:1px solid var(--accent); background:var(--accent); color:var(--paper);
+  border-radius:8px; padding:9px 16px; font-size:14px; font-weight:600;
+  transition:background .15s,color .15s,border-color .15s;}
+.btn[disabled]{border-color:var(--rule); background:transparent; color:var(--inkSoft); cursor:default;}
+
+.status{display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; padding:0 2px;}
+.leave{background:none; border:none; color:var(--gold); padding:0;
+  font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:.14em; text-transform:uppercase;}
+
+.entries{display:flex; flex-direction:column; gap:14px;}
+.entry{background:var(--surface); border:1px solid var(--rule);
+  border-left:4px solid var(--accent); border-radius:12px; padding:18px 20px;
+  animation:rise .5s cubic-bezier(.2,.7,.2,1) both;}
+.entry.mine{border-color:var(--gold); border-left-color:var(--gold);}
+@keyframes rise{from{opacity:0; transform:translateY(10px);} to{opacity:1; transform:none;}}
+
+.ehead{display:flex; justify-content:space-between; align-items:baseline; gap:12px;}
+.ehead-l{display:flex; align-items:baseline; gap:12px; flex-wrap:wrap;}
+.code{font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:13px; color:var(--accent);
+  border:1px solid var(--accent); border-radius:6px; padding:3px 8px; letter-spacing:.06em;}
+.etitle{font-family:'Newsreader',Georgia,serif; font-weight:500;
+  font-size:clamp(20px,3.4vw,25px); line-height:1.12; margin:0; letter-spacing:-0.01em;}
+.yours{color:var(--gold); white-space:nowrap; font-family:'IBM Plex Mono',monospace;
+  font-size:12px; letter-spacing:.14em; text-transform:uppercase;}
+
+.frame{font-family:'Newsreader',Georgia,serif; font-style:italic; color:var(--inkSoft);
+  font-size:16.5px; line-height:1.4; margin:12px 0 14px;}
+.dirs{list-style:none; padding:0; margin:0 0 18px; display:flex; flex-direction:column; gap:9px;}
+.dirs li{display:flex; gap:10px; font-size:15px; line-height:1.45;}
+.dnum{font-family:'IBM Plex Mono',monospace; color:var(--accent); font-size:13px; padding-top:1px; flex:0 0 auto;}
+
+.foot{border-top:1px solid var(--rule); padding-top:14px; display:flex; flex-wrap:wrap;
+  gap:14px; align-items:center; justify-content:space-between;}
+.slots{display:flex; gap:6px; align-items:center; flex-wrap:wrap;}
+.slot{width:13px; height:13px; border-radius:50%; display:inline-block; border:1.5px solid var(--rule);}
+.slot.fill{background:var(--accent); border-color:var(--accent);}
+.slot.fill.me{background:var(--gold); border-color:var(--gold); box-shadow:0 0 0 3px var(--goldSoft);}
+.names{font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--ink); line-height:1.5; margin-top:7px;}
+.names.empty{color:var(--inkSoft);}
+.over{color:var(--gold);}
+.join{flex:0 0 auto; border-radius:9px; padding:10px 20px; font-size:14.5px; font-weight:600;
+  border:1px solid var(--accent); background:var(--accent); color:var(--paper);
+  transition:background .15s,color .15s,border-color .15s;}
+.join.mine{border-color:var(--gold); background:var(--goldSoft); color:var(--gold); cursor:default;}
+.join[disabled]{border-color:var(--rule); background:transparent; color:var(--inkSoft); cursor:default;}
+
+.note{font-family:'IBM Plex Mono',monospace; font-size:12.5px; color:var(--inkSoft);
+  margin-top:26px; line-height:1.6;}
+
+.setup{background:var(--goldSoft); border:1px solid var(--gold); border-radius:12px;
+  padding:16px 18px; margin-bottom:18px; color:#5a4410; font-size:14px; line-height:1.5;}
+.setup b{color:#3d2e08;}
+.setup code{font-family:'IBM Plex Mono',monospace; font-size:12.5px;}
+.setup pre{background:#fff7e6; border:1px solid #e7d6a6; border-radius:8px; padding:10px;
+  overflow:auto; font-family:'IBM Plex Mono',monospace; font-size:12px; line-height:1.5; margin:8px 0;}
+
+@media (prefers-reduced-motion:reduce){ .entry{animation:none;} .btn,.join{transition:none;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">G53 IFDM Bootcamp &middot; Stanford &middot; 2026</div>
+  <h1>Choose your research territory</h1>
+  <p class="lede">Seven open questions in personal finance. Pick the one you&rsquo;d happily lose a week to &mdash; and find the people who&rsquo;d lose it with you.</p>
+
+  <div id="setup" class="setup" style="display:none"></div>
+
+  <div class="bar">
+    <label for="name" class="eyebrow" id="namelabel" style="margin-right:2px">Your name</label>
+    <input id="name" type="text" placeholder="e.g. Ada L." autocomplete="off" />
+    <button id="setname" class="btn">Set name</button>
+  </div>
+
+  <div class="status eyebrow">
+    <span id="count">Loading sign-ups&hellip;</span>
+    <button id="leave" class="leave" style="display:none"></button>
+  </div>
+
+  <div id="entries" class="entries"></div>
+
+  <p class="note">Sign-ups are shared &mdash; everyone who opens this page sees the same groups and names. You can be in one group at a time; joining another moves you. Use a distinguishable name (a last initial helps) so two people don&rsquo;t collide.</p>
+</div>
+
+<script>
+/* ============================================================================
+   CONFIG — fill these two values in, then host this file anywhere.
+   Both are safe to ship in client code: the anon key is meant to be public,
+   and access is governed by the row-level-security policies you set in the SQL.
+   Setup steps appear on the page itself until these are filled in.
+============================================================================ */
+const SUPABASE_URL      = "https://tbbffsvcnqmzpcavstop.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_s7kxcTNCV-hSVmSh1AimIQ_biDGxLy4";
+
+const TARGET = 4; // target small-group size (soft cap shown as slots)
+
+const THEMES = [
+  { code:"FE", name:"Does financial education work?",
+    frame:"The field's founding empirical question — when, for whom, and how much does teaching financial concepts actually move behavior?",
+    dirs:[
+      "Decay and dosage: how fast do effects fade, and does just-in-time delivery beat a front-loaded curriculum?",
+      "Heterogeneity: who gains most — and do good programs narrow or widen gaps by gender, income, or baseline numeracy?",
+      "Mandates as natural experiments: what do staggered school requirements identify, and what's the honest counterfactual?",
+      "Transmission: how much of an effect runs through teacher quality and fidelity rather than the content itself?" ] },
+  { code:"HF", name:"Household financial decisions",
+    frame:"The real choices — borrowing, saving, insuring — that people make under complexity and constraint.",
+    dirs:[
+      "The $400 question: what does measured fragility predict, and is it a liquidity story or a literacy story?",
+      "Mortgage and refinancing inertia: why is money left on the table, and what unsticks a household?",
+      "Numeracy vs. literacy vs. confidence: which component of \u201cknowing\u201d maps to which decision?",
+      "Life cycle: are the binding constraints different early, mid-career, and near retirement?" ] },
+  { code:"BX", name:"Behavioral frictions &amp; choice architecture",
+    frame:"When people know what to do but don't do it, design — not information — may be the lever.",
+    dirs:[
+      "Defaults vs. education: substitutes, complements, or does one crowd out the other?",
+      "Attention and shrouding: when do salient disclosures change behavior, and when are they ignored?",
+      "Reminders and commitment: what's the half-life of a nudge — does it persist or habituate?",
+      "Limits: where does choice architecture fail or backfire for financially constrained households?" ] },
+  { code:"DG", name:"Digital finance &amp; inclusion",
+    frame:"New rails — wallets, apps, mobile money — reshape who can save, pay, and borrow.",
+    dirs:[
+      "Two-sided adoption: how do beliefs about whether the other side will join drive take-up of a payment platform?",
+      "Capability or just digitization: does going digital build skills, or only re-skin old behavior?",
+      "Inclusion vs. extraction: when does fintech widen access, and when does it mostly add fees?",
+      "The last mile: what determines whether a wallet is actually used after sign-up?" ] },
+  { code:"AI", name:"AI in financial guidance &amp; education",
+    frame:"Conversational AI can deliver tailored guidance at near-zero marginal cost — if it can be trusted.",
+    dirs:[
+      "Personalized vs. generic: does an adaptive tutor beat a static curriculum — on knowledge, behavior, or both?",
+      "Accuracy and harm: how do you measure and bound bad advice, and who is accountable when it's wrong?",
+      "Trust and uptake: do people follow AI guidance, and does labeling it \u201cAI\u201d help or hurt?",
+      "Equity: does AI guidance close access gaps, or reproduce the gaps in its training data?" ] },
+  { code:"CR", name:"Credit, debt &amp; consumer protection",
+    frame:"How people borrow — and how borrowing is regulated — shapes financial lives more than almost anything else.",
+    dirs:[
+      "Buy-now-pay-later: substitute for cards, expanded consumption, or a path to overextension?",
+      "Disclosure design: do mandated APR/fee disclosures change choices, or just satisfy regulators?",
+      "Repayment: what explains minimum-payment anchoring, and can a default move it?",
+      "Education vs. regulation: for a given credit harm, when is teaching the fix and when is it rules?" ] },
+  { code:"MM", name:"Measurement &amp; methods",
+    frame:"The field lives or dies on whether we can measure literacy and identify causal effects credibly.",
+    dirs:[
+      "Beyond the Big Three: what do standard items miss, and can better instruments predict behavior?",
+      "Self-report vs. tested knowledge vs. revealed behavior: which belongs on the left-hand side?",
+      "The clean field experiment: randomization, attrition, and inference with clustered or small samples.",
+      "Data integrity: bots, inattentive responders, and quality in online financial-behavior studies." ] },
+];
+
+/* ---- config check + on-page setup instructions -------------------------- */
+const CONFIGURED = !SUPABASE_URL.includes("YOUR-PROJECT") && !SUPABASE_ANON_KEY.includes("YOUR-");
+if (!CONFIGURED) {
+  const s = document.getElementById("setup");
+  s.style.display = "block";
+  s.innerHTML =
+    "<b>One-time setup (only you, ~10 min — students never need any of this):</b>" +
+    "<ol style='margin:8px 0 0; padding-left:18px'>" +
+    "<li>Create a free project at <code>supabase.com</code>.</li>" +
+    "<li>Open the SQL editor and run this to make the table + open it to anonymous read/write:" +
+    "<pre>create table signups (\n  name text primary key,\n  theme text not null,\n  updated_at timestamptz default now()\n);\nalter table signups enable row level security;\ncreate policy \"read\"   on signups for select using (true);\ncreate policy \"write\"  on signups for insert with check (true);\ncreate policy \"update\" on signups for update using (true);\ncreate policy \"del\"    on signups for delete using (true);</pre></li>" +
+    "<li>In <b>Project Settings &rarr; API</b>, copy the <b>Project URL</b> and the <b>anon public</b> key into the two lines at the top of this file.</li>" +
+    "<li>Host the file: drag it onto <code>app.netlify.com/drop</code>, or use GitHub Pages / Cloudflare Pages / your Stanford web space. Share the URL.</li>" +
+    "</ol>" +
+    "<div style='margin-top:8px'>Browsing works now; joining turns on once the two values are filled in.</div>";
+}
+
+/* ---- Supabase REST helpers --------------------------------------------- */
+const H = {
+  "apikey": SUPABASE_ANON_KEY,
+  "Authorization": "Bearer " + SUPABASE_ANON_KEY,
+  "Content-Type": "application/json",
+};
+async function fetchRoster(){
+  if(!CONFIGURED) return [];
+  const r = await fetch(SUPABASE_URL + "/rest/v1/signups?select=name,theme", { headers: H });
+  if(!r.ok) throw new Error("read failed");
+  return await r.json();
+}
+async function upsert(name, theme){
+  const r = await fetch(SUPABASE_URL + "/rest/v1/signups?on_conflict=name", {
+    method:"POST",
+    headers:{ ...H, "Prefer":"resolution=merge-duplicates,return=minimal" },
+    body: JSON.stringify({ name, theme, updated_at:new Date().toISOString() }),
+  });
+  if(!r.ok) throw new Error("join failed");
+}
+async function removeRow(name){
+  const r = await fetch(SUPABASE_URL + "/rest/v1/signups?name=eq." + encodeURIComponent(name), {
+    method:"DELETE", headers:{ ...H, "Prefer":"return=minimal" },
+  });
+  if(!r.ok) throw new Error("leave failed");
+}
+
+/* ---- state + render ----------------------------------------------------- */
+let roster = [];                                  // [{name, theme}]
+let myName = localStorage.getItem("g53-name") || "";
+let busy = false;
+
+const $ = (id)=>document.getElementById(id);
+const nameInput = $("name");
+nameInput.value = myName;
+
+function myTheme(){ const m = roster.find(r=>r.name===myName); return m ? m.theme : null; }
+
+function render(){
+  const placed = roster.length;
+  $("count").innerHTML = CONFIGURED
+    ? (placed + " placed &middot; target " + TARGET + "/group")
+    : "preview &mdash; connect a database to enable joining";
+
+  const mine = myTheme();
+  const leaveBtn = $("leave");
+  if(mine){ leaveBtn.style.display="inline"; leaveBtn.textContent = "Leave " + mine; }
+  else { leaveBtn.style.display="none"; }
+
+  $("setname").textContent = (myName && nameInput.value.trim()!==myName) ? "Update" : "Set name";
+  $("namelabel").textContent = myName ? "Signed in as" : "Your name";
+
+  const haveName = !!myName;
+  const wrap = $("entries");
+  wrap.innerHTML = "";
+  THEMES.forEach((th, i)=>{
+    const members = roster.filter(r=>r.theme===th.code).map(r=>r.name);
+    const isMine = mine===th.code;
+    const over = members.length > TARGET;
+    const n = Math.max(TARGET, members.length);
+
+    let slots = "";
+    for(let k=0;k<n;k++){
+      const filled = k < members.length;
+      const meSlot = isMine && members[k]===myName;
+      slots += '<span class="slot'+(filled?' fill':'')+(meSlot?' me':'')+'"></span>';
+    }
+
+    const dirs = th.dirs.map((d,j)=>
+      '<li><span class="dnum">'+String(j+1).padStart(2,"0")+'</span><span>'+d+'</span></li>').join("");
+
+    const joinDisabled = !haveName || isMine || !CONFIGURED || busy;
+    const joinLabel = isMine ? "Joined \u2713" : (mine ? "Switch here" : "Join group");
+    const joinClass = "join" + (isMine?" mine":"");
+
+    const el = document.createElement("article");
+    el.className = "entry" + (isMine?" mine":"");
+    el.style.animationDelay = (i*45)+"ms";
+    el.innerHTML =
+      '<div class="ehead"><div class="ehead-l">'+
+        '<span class="code">'+th.code+'</span>'+
+        '<h2 class="etitle">'+th.name+'</h2></div>'+
+        (isMine?'<span class="yours">Your group</span>':'')+
+      '</div>'+
+      '<p class="frame">'+th.frame+'</p>'+
+      '<div class="eyebrow" style="margin-bottom:8px">Directions to explore</div>'+
+      '<ul class="dirs">'+dirs+'</ul>'+
+      '<div class="foot"><div style="min-width:0">'+
+        '<div class="slots">'+slots+'</div>'+
+        '<div class="names'+(members.length?'':' empty')+'">'+
+          (members.length? members.join("  &middot;  ") : "no one yet — be first")+
+          (over?'<span class="over">  &middot;  over target</span>':'')+
+        '</div></div>'+
+        '<button class="'+joinClass+'" data-code="'+th.code+'"'+(joinDisabled?' disabled':'')+
+          (haveName?'':' title="Add your name first"')+'>'+joinLabel+'</button>'+
+      '</div>';
+    wrap.appendChild(el);
+  });
+
+  wrap.querySelectorAll("button[data-code]").forEach(b=>{
+    b.addEventListener("click", ()=>join(b.getAttribute("data-code")));
+  });
+}
+
+/* ---- actions ------------------------------------------------------------ */
+async function commitName(){
+  const next = nameInput.value.trim();
+  if(!next || next===myName) return;
+  const old = myName, oldTheme = myTheme();
+  myName = next;
+  localStorage.setItem("g53-name", myName);
+  try{
+    if(old && oldTheme){ await removeRow(old); await upsert(myName, oldTheme); }
+    await refresh();
+  }catch(e){ /* keep UI responsive */ render(); }
+}
+async function join(code){
+  if(!myName || busy || !CONFIGURED) return;
+  busy = true; render();
+  try{ await upsert(myName, code); await refresh(); }
+  catch(e){ alert("Couldn't save — check your connection and try again."); }
+  finally{ busy = false; render(); }
+}
+async function leaveGroup(){
+  if(!myName || busy) return;
+  busy = true; render();
+  try{ await removeRow(myName); await refresh(); }
+  catch(e){}
+  finally{ busy = false; render(); }
+}
+async function refresh(){
+  try{ roster = await fetchRoster(); }catch(e){}
+  render();
+}
+
+$("setname").addEventListener("click", commitName);
+nameInput.addEventListener("keydown", e=>{ if(e.key==="Enter") commitName(); });
+nameInput.addEventListener("input", ()=>{ $("setname").textContent =
+  (myName && nameInput.value.trim()!==myName) ? "Update" : "Set name"; });
+$("leave").addEventListener("click", leaveGroup);
+
+render();
+refresh();
+setInterval(refresh, 6000); // gentle live sync
+</script>
+</body>
+</html>
