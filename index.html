@@ -96,13 +96,15 @@ button{font-family:inherit; cursor:pointer;}
   overflow:auto; font-family:'IBM Plex Mono',monospace; font-size:12px; line-height:1.5; margin:8px 0;}
 
 @media (prefers-reduced-motion:reduce){ .entry{animation:none;} .btn,.join{transition:none;} }
+.readings{font-family:'Newsreader',Georgia,serif; font-size:13.5px; line-height:1.55;
+  color:var(--inkSoft); margin:0 0 16px; padding-left:12px; border-left:2px solid var(--rule);}
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="eyebrow">G53 IFDM Bootcamp &middot; Stanford &middot; 2026</div>
   <h1>Choose your research territory</h1>
-  <p class="lede">Seven open questions in personal finance. Pick the one you&rsquo;d happily lose a week to &mdash; and find the people who&rsquo;d lose it with you.</p>
+  <p class="lede">Six research areas in personal finance &mdash; each with open questions and a few readings to start from. Pick the one you&rsquo;d happily lose a week to.</p>
 
   <div id="setup" class="setup" style="display:none"></div>
 
@@ -119,7 +121,7 @@ button{font-family:inherit; cursor:pointer;}
 
   <div id="entries" class="entries"></div>
 
-  <p class="note">Sign-ups are shared &mdash; everyone who opens this page sees the same groups and names. You can be in one group at a time; joining another moves you. Use a distinguishable name (a last initial helps) so two people don&rsquo;t collide.</p>
+  <p class="note">Sign-ups are shared &mdash; everyone sees how full each group is, but not who&rsquo;s in it. You can be in one group at a time; joining another moves you. Use a distinguishable name (a last initial helps) so two people don&rsquo;t collide.</p>
 </div>
 
 <script>
@@ -135,55 +137,41 @@ const SUPABASE_ANON_KEY = "sb_publishable_s7kxcTNCV-hSVmSh1AimIQ_biDGxLy4";
 const TARGET = 4; // target small-group size (soft cap shown as slots)
 
 const THEMES = [
-  { code:"FE", name:"Does financial education work?",
-    frame:"The field's founding empirical question — when, for whom, and how much does teaching financial concepts actually move behavior?",
+  { code:"ML", name:"Measurement of Financial Literacy",
     dirs:[
-      "Decay and dosage: how fast do effects fade, and does just-in-time delivery beat a front-loaded curriculum?",
-      "Heterogeneity: who gains most — and do good programs narrow or widen gaps by gender, income, or baseline numeracy?",
-      "Mandates as natural experiments: what do staggered school requirements identify, and what's the honest counterfactual?",
-      "Transmission: how much of an effect runs through teacher quality and fidelity rather than the content itself?" ] },
-  { code:"HF", name:"Household financial decisions",
-    frame:"The real choices — borrowing, saving, insuring — that people make under complexity and constraint.",
+      "The Big Three pin down what people know. What would it take to also measure financial competence — the capacity to act optimally under constraints?",
+      "The Big Three predict behavior robustly; what mediates that link, and which complementary measures predict who acts on what they know?",
+      "Can we assess the quality of financial decisions while imposing only weak restrictions on preferences and beliefs?" ],
+    readings:"Lusardi & Mitchell (2014, Journal of Economic Literature), the foundational case for the Big Three; van Rooij, Lusardi & Alessie (2011, Journal of Financial Economics) on literacy and stock-market participation; Ambuehl, Bernheim & Lusardi (2022, American Economic Review), \u201cEvaluating Deliberative Competence,\u201d a competence metric with a formal welfare interpretation." },
+  { code:"FE", name:"Financial Education",
     dirs:[
-      "The $400 question: what does measured fragility predict, and is it a liquidity story or a literacy story?",
-      "Mortgage and refinancing inertia: why is money left on the table, and what unsticks a household?",
-      "Numeracy vs. literacy vs. confidence: which component of \u201cknowing\u201d maps to which decision?",
-      "Life cycle: are the binding constraints different early, mid-career, and near retirement?" ] },
-  { code:"BX", name:"Behavioral frictions &amp; choice architecture",
-    frame:"When people know what to do but don't do it, design — not information — may be the lever.",
+      "Do gains in financial knowledge translate into welfare gains — and can we identify that, or only shifts in knowledge and self-reported behavior?",
+      "Is low take-up of financial education a rational response to low returns, or a behavioral wedge — and under-provision relative to which optimum?",
+      "How do high school mandates influence the demand and supply of financial education in colleges?" ],
+    readings:"Fernandes, Lynch & Netemeyer (2014, Management Science), the skeptical meta-analysis finding intervention effects are tiny and decay over time; Kaiser, Lusardi, Menkhoff & Urban (2022, Journal of Financial Economics), the counterpoint showing education does move knowledge and downstream behavior; Urban, Schmeiser, Collins & Brown (2020, Economics of Education Review), on how state high-school mandates raise young adults' credit scores and lower defaults; Gemmo, Michaud & Mitchell (2023, NBER WP 31682), \u201cSelection into Financial Education and Effects on Portfolio Choice,\u201d which elicits willingness to pay for education and finds that those most willing to participate are those who gain the most." },
+  { code:"GG", name:"Gender Gaps in Financial Literacy",
     dirs:[
-      "Defaults vs. education: substitutes, complements, or does one crowd out the other?",
-      "Attention and shrouding: when do salient disclosures change behavior, and when are they ignored?",
-      "Reminders and commitment: what's the half-life of a nudge — does it persist or habituate?",
-      "Limits: where does choice architecture fail or backfire for financially constrained households?" ] },
-  { code:"DG", name:"Digital finance &amp; inclusion",
-    frame:"New rails — wallets, apps, mobile money — reshape who can save, pay, and borrow.",
+      "How much of the gender gap is knowledge, and how much is confidence and response style, given women's higher propensity to answer \u201cdo not know\u201d?",
+      "Do AI advisory tools compress the gap by lowering the cost of seeking advice, or widen it through differential adoption?",
+      "Do knowledge gaps map into behavioral and welfare gaps, or are they offset through advice-seeking, delegation, and risk preferences?" ],
+    readings:"Bucher-Koenen, Lusardi, Alessie & van Rooij (2017, Journal of Consumer Affairs), an overview of the gender gap; Bucher-Koenen, Alessie, Lusardi & van Rooij, \u201cFearless Woman\u201d (Management Science), showing about a third of the gap reflects lower confidence rather than knowledge; Bucher-Koenen, Hackethal, Koenen & Laudenbach (2025, American Economic Review) on gender differences in financial advice." },
+  { code:"AI", name:"AI and Financial Decision-making",
     dirs:[
-      "Two-sided adoption: how do beliefs about whether the other side will join drive take-up of a payment platform?",
-      "Capability or just digitization: does going digital build skills, or only re-skin old behavior?",
-      "Inclusion vs. extraction: when does fintech widen access, and when does it mostly add fees?",
-      "The last mile: what determines whether a wallet is actually used after sign-up?" ] },
-  { code:"AI", name:"AI in financial guidance &amp; education",
-    frame:"Conversational AI can deliver tailored guidance at near-zero marginal cost — if it can be trusted.",
+      "Where does AI shift behavior rather than merely the information set?",
+      "How do we evaluate generative AI as a financial adviser — accuracy, suitability, take-up, and harm — and how do users calibrate reliance on it?",
+      "Is AI an equalizer of financial competence, or does it amplify dispersion across the distribution?" ],
+    readings:"D'Acunto, Prabhala & Rossi (2019, Review of Financial Studies), \u201cThe Promises and Pitfalls of Robo-Advising\u201d; Choukhmane, de Silva, Lin & Akuzawa (2026), \u201cAI Financial Advice: Supply, Demand, and Life Cycle Implications,\u201d which separates the supply of LLM advice from demand using human-written prompts and simulates life-cycle paths, finding that following LLM advice moves most people closer to standard life-cycle benchmarks but with effects that vary across households; Lo & Ross (2024), \u201cCan ChatGPT Plan Your Retirement? Generative AI and Financial Advice.\u201d" },
+  { code:"SM", name:"Structural Models of Financial Literacy",
     dirs:[
-      "Personalized vs. generic: does an adaptive tutor beat a static curriculum — on knowledge, behavior, or both?",
-      "Accuracy and harm: how do you measure and bound bad advice, and who is accountable when it's wrong?",
-      "Trust and uptake: do people follow AI guidance, and does labeling it \u201cAI\u201d help or hurt?",
-      "Equity: does AI guidance close access gaps, or reproduce the gaps in its training data?" ] },
-  { code:"CR", name:"Credit, debt &amp; consumer protection",
-    frame:"How people borrow — and how borrowing is regulated — shapes financial lives more than almost anything else.",
+      "If financial literacy is endogenous human capital, can AI be modeled as a technology that substitutes for it — and what does that do to the returns to knowledge versus access?",
+      "What is the optimal life-cycle timing of financial education once knowledge depreciation is taken seriously — early accumulation or just-in-time?" ],
+    readings:"Lusardi, Michaud & Mitchell (2017, Journal of Political Economy), \u201cOptimal Financial Knowledge and Wealth Inequality,\u201d modeling literacy as endogenous human capital and attributing 30–40% of retirement wealth inequality to it; Cota & \u0160terc (2024), \u201cFinancial Skills and Search in the Mortgage Market,\u201d a structural mortgage-search model with endogenous skill accumulation in which less financially literate households search less (awarded best paper at the 2026 Stanford IFDM Financial Education Symposium)." },
+  { code:"BF", name:"Behavioral Frictions",
     dirs:[
-      "Buy-now-pay-later: substitute for cards, expanded consumption, or a path to overextension?",
-      "Disclosure design: do mandated APR/fee disclosures change choices, or just satisfy regulators?",
-      "Repayment: what explains minimum-payment anchoring, and can a default move it?",
-      "Education vs. regulation: for a given credit harm, when is teaching the fix and when is it rules?" ] },
-  { code:"MM", name:"Measurement &amp; methods",
-    frame:"The field lives or dies on whether we can measure literacy and identify causal effects credibly.",
-    dirs:[
-      "Beyond the Big Three: what do standard items miss, and can better instruments predict behavior?",
-      "Self-report vs. tested knowledge vs. revealed behavior: which belongs on the left-hand side?",
-      "The clean field experiment: randomization, attrition, and inference with clustered or small samples.",
-      "Data integrity: bots, inattentive responders, and quality in online financial-behavior studies." ] },
+      "Are biases and frictions complements or substitutes — and when is the same observed choice separately identified as one versus the other?",
+      "Can we decompose suboptimal behavior into limited literacy, behavioral bias, and frictions — channels that are observationally close but imply different policy?",
+      "What can newly legalized, high-frequency settings like sports betting identify about the literacy-versus-bias margin, and where do the welfare costs fall?" ],
+    readings:"Beshears, Choi, Laibson & Madrian (2018), \u201cBehavioral Household Finance,\u201d in the Handbook of Behavioral Economics, Vol. 1 — the field overview of empirical regularities the classical model can't explain and the interventions deployed against them; Andersen, Badarinza, Liu, Marx & Ramadorai (2022, American Economic Review), \u201cReference Dependence in the Housing Market,\u201d which structurally estimates loss aversion from Danish data and finds losses weigh roughly 2.5 times as much as gains; Baker, Balthrop, Johnson, Kotter & Pisciotta (2024), \u201cGambling Away Stability,\u201d on legalized sports betting crowding out investment among constrained households." },
 ];
 
 /* ---- config check + on-page setup instructions -------------------------- */
@@ -234,6 +222,8 @@ async function removeRow(name){
 let roster = [];                                  // [{name, theme}]
 let myName = localStorage.getItem("g53-name") || "";
 let busy = false;
+let firstRender = true;                           // animate entrance only once
+let lastSig = "__init__";                         // skip re-render when nothing changed
 
 const $ = (id)=>document.getElementById(id);
 const nameInput = $("name");
@@ -280,16 +270,18 @@ function render(){
 
     const el = document.createElement("article");
     el.className = "entry" + (isMine?" mine":"");
-    el.style.animationDelay = (i*45)+"ms";
+    if(firstRender){ el.style.animationDelay = (i*45)+"ms"; }
+    else { el.style.animation = "none"; }
     el.innerHTML =
       '<div class="ehead"><div class="ehead-l">'+
         '<span class="code">'+th.code+'</span>'+
         '<h2 class="etitle">'+th.name+'</h2></div>'+
         (isMine?'<span class="yours">Your group</span>':'')+
       '</div>'+
-      '<p class="frame">'+th.frame+'</p>'+
-      '<div class="eyebrow" style="margin-bottom:8px">Directions to explore</div>'+
+      '<div class="eyebrow" style="margin-bottom:8px">Open questions</div>'+
       '<ul class="dirs">'+dirs+'</ul>'+
+      '<div class="eyebrow" style="margin:14px 0 6px">Readings</div>'+
+      '<p class="readings">'+th.readings+'</p>'+
       '<div class="foot"><div style="min-width:0">'+
         '<div class="slots">'+slots+'</div>'+
         '<div class="names'+(members.length?'':' empty')+'">'+
@@ -308,6 +300,7 @@ function render(){
   wrap.querySelectorAll("button[data-code]").forEach(b=>{
     b.addEventListener("click", ()=>join(b.getAttribute("data-code")));
   });
+  firstRender = false;
 }
 
 /* ---- actions ------------------------------------------------------------ */
@@ -337,8 +330,12 @@ async function leaveGroup(){
   finally{ busy = false; render(); }
 }
 async function refresh(){
-  try{ roster = await fetchRoster(); }catch(e){}
-  render();
+  try{
+    const next = await fetchRoster();
+    const sig = JSON.stringify(next.map(r=>r.theme+"|"+r.name).sort());
+    roster = next;
+    if(sig !== lastSig){ lastSig = sig; render(); }
+  }catch(e){}
 }
 
 $("setname").addEventListener("click", commitName);
